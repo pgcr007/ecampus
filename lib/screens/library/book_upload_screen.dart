@@ -33,17 +33,17 @@ class _BookUploadScreenState extends ConsumerState<BookUploadScreen> {
   }
 
   Future<void> _pickFile() async {
-    final result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['pdf'],
-    );
-    if (result != null && result.files.single.path != null) {
-      setState(() {
-        _selectedFile = File(result.files.single.path!);
-        _selectedFileName = result.files.single.name;
-      });
-    }
+  final file = await FilePicker.pickFile(
+    type: FileType.custom,
+    allowedExtensions: ['pdf'],
+  );
+  if (file != null && file.path != null) {
+    setState(() {
+      _selectedFile = File(file.path!);
+      _selectedFileName = file.name;
+    });
   }
+}
 
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) return;
