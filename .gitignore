@@ -117,3 +117,12 @@ app.*.symbols
 !**/ios/**/default.perspectivev3
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 !/dev/ci/**/Gemfile.lock
+
+# Firebase secrets — never commit
+**/google-services.json
+**/GoogleService-Info.plist
+lib/firebase_options.dart
+
+# API keys
+.env
+android/local.properties
