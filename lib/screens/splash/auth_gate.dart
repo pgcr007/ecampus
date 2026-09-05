@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/auth_provider.dart';
 import '../auth/complete_profile_screen.dart';
 import '../auth/phone_entry_screen.dart';
-import '../home/home_placeholder_screen.dart';
+import '../home/home_shell.dart';
 
 /// Root widget that decides which screen to show based on auth + profile
 /// state. This is the single source of truth for routing in the app.
@@ -28,14 +28,14 @@ class AuthGate extends ConsumerWidget {
           loading: () => const _SplashLoader(),
           error: (err, _) => _SplashError(message: err.toString()),
           data: (profile) {
-            if (profile == null) {
-              return CompleteProfileScreen(
-                uid: user.uid,
-                phone: user.phoneNumber ?? '',
-              );
-            }
-            return HomePlaceholderScreen(user: profile);
-          },
+  if (profile == null) {
+    return CompleteProfileScreen(
+      uid: user.uid,
+      phone: user.phoneNumber ?? '',
+    );
+  }
+  return const HomeShell();
+},
         );
       },
     );
