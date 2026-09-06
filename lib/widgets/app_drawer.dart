@@ -12,28 +12,25 @@ class AppDrawer extends ConsumerWidget {
 
   const AppDrawer({super.key, required this.user});
 
-  List<NavItem> _itemsForRole(UserRole role) {
-    final items = <NavItem>[NavItem.home];
+  // NEW
+List<NavItem> _itemsForRole(UserRole role) {
+  final items = <NavItem>[
+    NavItem.home,
+    NavItem.announcements,
+    NavItem.library,
+    NavItem.bus,
+    NavItem.chat,
+    NavItem.chatbot,
+    NavItem.technews,
+  ];
 
-    if (RoleUtils.isClassRepOrAbove(role)) {
-      items.add(NavItem.announcements);
-    }
-
-    items.addAll([
-      NavItem.library,
-      NavItem.bus,
-      NavItem.chat,
-      NavItem.chatbot,
-      NavItem.technews,
-    ]);
-
-    if (RoleUtils.isTeacher(role)) {
-      items.add(NavItem.manageUsers);
-    }
-
-    items.add(NavItem.profile);
-    return items;
+  if (RoleUtils.isTeacher(role)) {
+    items.add(NavItem.manageUsers);
   }
+
+  items.add(NavItem.profile);
+  return items;
+}
 
   Future<void> _confirmSignOut(BuildContext context, WidgetRef ref) async {
     final confirmed = await showDialog<bool>(

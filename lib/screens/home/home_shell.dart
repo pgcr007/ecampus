@@ -9,7 +9,7 @@ import '../../widgets/app_drawer.dart';
 import '../announcements/announcements_screen.dart';
 import '../admin/manage_users_screen.dart';
 import '../bus/bus_screen.dart';
-import '../chat/chat_screen.dart';
+import '../chat/chat_list_screen.dart';
 import '../chatbot/chatbot_screen.dart';
 import '../library/library_screen.dart';
 import '../profile/profile_screen.dart';
@@ -33,8 +33,9 @@ class HomeShell extends ConsumerWidget {
         return const LibraryScreen();
       case NavItem.bus:
         return const BusScreen();
-      case NavItem.chat:
-        return const ChatScreen();
+      // NEW case
+case NavItem.chat:
+  return const ChatListScreen();
       case NavItem.chatbot:
         return const ChatbotScreen();
       case NavItem.technews:
