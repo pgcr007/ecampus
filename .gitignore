@@ -126,3 +126,5 @@ lib/firebase_options.dart
 # API keys
 .env
 android/local.properties
+env.json
+run.bat
