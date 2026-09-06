@@ -3,6 +3,12 @@
         android:label="ecampus"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyB4z1K-oXT1ErA5BrBbs4scus6VSpjgEZ8"/>
+
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
