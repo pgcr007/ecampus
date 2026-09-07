@@ -17,4 +17,12 @@ class AppColors {
   static const Color studentBadge = primary;
   static const Color classrepBadge = secondary;
   static const Color teacherBadge = Color(0xFFE0912B);
+
+  // Dashboard quick-access accents — one distinct color per feature so
+  // the "Quick Access" grid reads as a set of destinations, not a wall
+  // of identical blue tiles.
+  static const Color accentCoral = Color(0xFFEF5DA8);
+  static const Color accentTeal = Color(0xFF0EA5A5);
+  static const Color accentPurple = Color(0xFF7C5CFC);
+  static const Color accentIndigo = Color(0xFF3949AB);
 }

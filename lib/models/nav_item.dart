@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../theme/app_colors.dart';
 
 /// Every possible destination in the app drawer. Not every role sees
 /// every item — AppDrawer filters this list based on the user's role.
@@ -58,6 +59,32 @@ extension NavItemX on NavItem {
         return Icons.admin_panel_settings_rounded;
       case NavItem.profile:
         return Icons.person_rounded;
+    }
+  }
+
+  /// One distinct color per destination — shared by the dashboard's
+  /// Quick Access grid and the drawer list, so a feature's color stays
+  /// consistent everywhere it appears instead of being redefined twice.
+  Color get accentColor {
+    switch (this) {
+      case NavItem.home:
+        return AppColors.primary;
+      case NavItem.announcements:
+        return AppColors.accentCoral;
+      case NavItem.library:
+        return AppColors.primary;
+      case NavItem.bus:
+        return AppColors.accentTeal;
+      case NavItem.chat:
+        return AppColors.secondary;
+      case NavItem.chatbot:
+        return AppColors.accentPurple;
+      case NavItem.technews:
+        return AppColors.teacherBadge;
+      case NavItem.manageUsers:
+        return AppColors.accentIndigo;
+      case NavItem.profile:
+        return AppColors.textSecondary;
     }
   }
 }

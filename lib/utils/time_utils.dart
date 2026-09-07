@@ -36,4 +36,13 @@ class TimeUtils {
     if (dt == null) return '';
     return '${dt.day} ${_months[dt.month - 1]} · ${_clockTime(dt)}';
   }
+
+  /// "Good morning" / "Good afternoon" / "Good evening" based on the
+  /// device clock — used for the dashboard hero header.
+  static String greeting() {
+    final hour = DateTime.now().hour;
+    if (hour < 12) return 'Good morning';
+    if (hour < 17) return 'Good afternoon';
+    return 'Good evening';
+  }
 }
