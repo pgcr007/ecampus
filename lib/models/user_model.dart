@@ -1,3 +1,4 @@
+// lib/models/user_model.dart
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 enum UserRole { student, classrep, teacher }
@@ -43,6 +44,7 @@ class UserModel {
   final String phone;
   final String name;
   final UserRole role;
+  final String department; // NEW (Phase 11) — empty string = not set yet
   final DateTime? createdAt;
 
   UserModel({
@@ -50,6 +52,7 @@ class UserModel {
     required this.phone,
     required this.name,
     required this.role,
+    this.department = '',
     this.createdAt,
   });
 
@@ -60,6 +63,7 @@ class UserModel {
       phone: data['phone'] as String? ?? '',
       name: data['name'] as String? ?? '',
       role: UserRoleX.fromString(data['role'] as String? ?? 'student'),
+      department: data['department'] as String? ?? '',
       createdAt: (data['createdAt'] as Timestamp?)?.toDate(),
     );
   }
@@ -70,6 +74,7 @@ class UserModel {
       'phone': phone,
       'name': name,
       'role': role.value,
+      'department': department,
       'createdAt': FieldValue.serverTimestamp(),
     };
   }

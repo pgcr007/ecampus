@@ -1,13 +1,59 @@
+// lib/screens/profile/profile_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-// Add this import at the top:
 import '../../models/user_model.dart';
 import '../../providers/auth_provider.dart';
 import '../../theme/app_colors.dart';
+import '../../utils/department_utils.dart';
 import '../../utils/role_utils.dart';
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
+
+  // NEW (Phase 11) — dialog to set/change department. Needed because
+  // accounts created before Phase 11 have no department field at all.
+  Future<void> _editDepartment(BuildContext context, WidgetRef ref, UserModel user) async {
+    String? selected = user.department.isNotEmpty ? user.department : null;
+
+    final result = await showDialog<String>(
+      context: context,
+      builder: (ctx) => StatefulBuilder(
+        builder: (ctx, setState) => AlertDialog(
+          title: const Text('Set Department'),
+          content: DropdownButtonFormField<String>(
+            initialValue: selected,
+            decoration: const InputDecoration(border: OutlineInputBorder()),
+            items: DepartmentUtils.all
+                .map((d) => DropdownMenuItem(value: d, child: Text(d)))
+                .toList(),
+            onChanged: (value) => setState(() => selected = value),
+          ),
+          actions: [
+            TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Cancel')),
+            FilledButton(
+              onPressed: selected == null ? null : () => Navigator.pop(ctx, selected),
+              child: const Text('Save'),
+            ),
+          ],
+        ),
+      ),
+    );
+
+    if (result != null && context.mounted) {
+      try {
+        await ref.read(authServiceProvider).updateDepartment(uid: user.uid, department: result);
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Department set to $result')),
+          );
+        }
+      } catch (e) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to update: $e')));
+        }
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -56,6 +102,22 @@ class ProfileScreen extends ConsumerWidget {
                   leading: const Icon(Icons.phone_rounded, color: AppColors.primary),
                   title: const Text('Phone'),
                   subtitle: Text(user.phone),
+                ),
+              ),
+              const SizedBox(height: 12),
+              // NEW (Phase 11) — department row, tap to set/change.
+              Card(
+                elevation: 0,
+                color: AppColors.surface,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                child: ListTile(
+                  leading: const Icon(Icons.school_rounded, color: AppColors.primary),
+                  title: const Text('Department'),
+                  subtitle: Text(
+                    user.department.isNotEmpty ? user.department : 'Not set — tap to choose',
+                  ),
+                  trailing: const Icon(Icons.chevron_right_rounded),
+                  onTap: () => _editDepartment(context, ref, user),
                 ),
               ),
               const SizedBox(height: 12),

@@ -59,9 +59,23 @@ class AuthService {
     required String phone,
     required String name,
     required UserRole role,
+    required String department, // NEW (Phase 11)
   }) async {
-    final model = UserModel(uid: uid, phone: phone, name: name, role: role);
+    final model = UserModel(
+      uid: uid,
+      phone: phone,
+      name: name,
+      role: role,
+      department: department,
+    );
     await _firestore.collection('users').doc(uid).set(model.toMap());
+  }
+
+  Future<void> updateDepartment({
+    required String uid,
+    required String department,
+  }) async {
+    await _firestore.collection('users').doc(uid).update({'department': department});
   }
 
   /// Validates a teacher signup code against config/roles.teacherAccessCode.

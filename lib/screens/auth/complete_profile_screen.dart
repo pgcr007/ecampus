@@ -1,8 +1,10 @@
+// lib/screens/auth/complete_profile_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../models/user_model.dart';
 import '../../providers/auth_provider.dart';
+import '../../utils/department_utils.dart';
 
 class CompleteProfileScreen extends ConsumerStatefulWidget {
   final String uid;
@@ -25,6 +27,7 @@ class _CompleteProfileScreenState extends ConsumerState<CompleteProfileScreen> {
   final _teacherCodeController = TextEditingController();
 
   UserRole _selectedRole = UserRole.student;
+  String? _selectedDepartment; // NEW (Phase 11)
   bool _isSaving = false;
 
   @override
@@ -60,6 +63,7 @@ class _CompleteProfileScreenState extends ConsumerState<CompleteProfileScreen> {
         phone: widget.phone,
         name: _nameController.text.trim(),
         role: _selectedRole,
+        department: _selectedDepartment ?? '',
       );
       // No navigation needed — userProfileProvider stream updates
       // automatically and AuthGate will swap to the home screen.
@@ -92,6 +96,22 @@ class _CompleteProfileScreenState extends ConsumerState<CompleteProfileScreen> {
                   validator: (value) => (value == null || value.trim().isEmpty)
                       ? 'Please enter your name'
                       : null,
+                ),
+                const SizedBox(height: 20),
+                // NEW (Phase 11) — department dropdown, required for everyone
+                // so the Tech News feed can auto-filter for students later.
+                DropdownButtonFormField<String>(
+                  initialValue: _selectedDepartment,
+                  decoration: const InputDecoration(
+                    labelText: 'Department',
+                    border: OutlineInputBorder(),
+                  ),
+                  items: DepartmentUtils.all
+                      .map((d) => DropdownMenuItem(value: d, child: Text(d)))
+                      .toList(),
+                  onChanged: (value) => setState(() => _selectedDepartment = value),
+                  validator: (value) =>
+                      value == null ? 'Please select your department' : null,
                 ),
                 const SizedBox(height: 20),
                 Text('I am a...', style: Theme.of(context).textTheme.titleMedium),
