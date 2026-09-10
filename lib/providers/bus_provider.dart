@@ -2,12 +2,19 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../models/bus_location_model.dart';
 import '../services/bus_service.dart';
+import '../services/directions_service.dart';
 import 'auth_provider.dart';
 
 /// Single demo route/document ID — this project ships one college bus.
 const String mainRouteId = 'main_route';
 
 final busServiceProvider = Provider<BusService>((ref) => BusService());
+
+/// Same provider pattern as geminiServiceProvider/newsApiServiceProvider —
+/// optional real road-distance/ETA/route enhancement for BusScreen, safe
+/// to use even when DIRECTIONS_API_KEY isn't configured (see
+/// DirectionsService.isConfigured).
+final directionsServiceProvider = Provider<DirectionsService>((ref) => DirectionsService());
 
 final busLocationStreamProvider = StreamProvider<BusLocationModel?>((ref) {
   // Re-subscribe whenever the signed-in user changes, so a stream that
